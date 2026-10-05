@@ -1,0 +1,79 @@
+# =============================================================================
+# CivicSense AI — .gitignore
+# =============================================================================
+
+# ----- Python -----
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+*.whl
+
+# ----- Virtual Environments -----
+civicsenseAI_env/
+venv/
+.venv/
+env/
+
+# ----- Environment / Secrets -----
+.env
+.env.local
+.env.*.local
+
+# ----- IDE -----
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.project
+.classpath
+.settings/
+
+# ----- OS -----
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ----- Model Weights & Checkpoints -----
+ai-service/models/*.pt
+ai-service/models/*.pth
+ai-service/models/*.onnx
+ai-service/models/*.bin
+ai-service/models/*.safetensors
+!ai-service/models/.gitkeep
+
+# ----- Datasets (large files) -----
+ai-service/datasets/*.zip
+ai-service/datasets/*.tar.gz
+ai-service/datasets/images/
+!ai-service/datasets/.gitkeep
+
+# ----- Qdrant Data -----
+qdrant_data/
+qdrant_storage/
+
+# ----- Logs -----
+logs/
+*.log
+
+# ----- Test / Coverage -----
+.coverage
+htmlcov/
+.pytest_cache/
+.mypy_cache/
+
+# ----- Docker -----
+docker-compose.override.yml
+
+# ----- Jupyter -----
+.ipynb_checkpoints/
+
+# ----- Node (for future frontend) -----
+node_modules/
+.next/
+out/
