@@ -12,11 +12,12 @@ from app.api.deps import get_decision_engine
 @pytest.fixture
 def anyio_backend():
     return "asyncio"
-
-
+    
 from app.api.deps import get_decision_engine
 from app.vision.mock_detector import MockVisionDetector
-from app.severity.mock_engine import MockSeverityEngine
+
+
+from app.severity.engine import SeverityEngine
 from app.rag.mock_retriever import MockRAGRetriever
 from app.llm.mock_generator import MockComplaintGenerator
 from app.location.mock_provider import MockLocationProvider
@@ -27,7 +28,7 @@ from app.decision.engine import DecisionEngine
 def mock_get_decision_engine():
     return DecisionEngine(
         vision=MockVisionDetector(),
-        severity=MockSeverityEngine(),
+        severity=SeverityEngine(),
         location=MockLocationProvider(),
         authority=MockAuthorityProvider(),
         rag=MockRAGRetriever(),

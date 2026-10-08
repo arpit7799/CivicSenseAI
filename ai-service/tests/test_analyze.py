@@ -75,22 +75,27 @@ async def test_analyze_complaint_has_subject_and_body(client, valid_analysis_req
 
 @pytest.mark.anyio
 async def test_analyze_mock_source_fields(client, valid_analysis_request):
-    """All provider outputs should have source='mock' in Phase 1."""
+    """Provider outputs should have expected sources."""
     response = await client.post("/api/v1/analyze", json=valid_analysis_request)
     data = response.json()
 
-    assert data["severity"]["source"] == "mock"
+    assert data["severity"]["source"] == "rules_engine_v1"
     assert data["location"]["source"] == "mock"
     assert data["authority"]["source"] == "mock"
     assert data["complaint"]["source"] == "mock"
     assert data["vision_details"]["source"] == "mock"
 
-    # Metadata should report all providers as mock
+    # Metadata should report appropriately
     providers = data["metadata"]["providers"]
     for name, source in providers.items():
-        assert source == "mock", (
-            f"Provider '{name}' should be 'mock' in Phase 1, got '{source}'"
-        )
+        if name == "vision":
+            assert source == "mock"
+        elif name == "severity":
+            assert source == "rules_engine_v1"
+        else:
+            assert source == "mock", (
+                f"Provider '{name}' should be 'mock', got '{source}'"
+            )
 
 
 @pytest.mark.anyio

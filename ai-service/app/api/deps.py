@@ -14,7 +14,7 @@ from app.decision.engine import DecisionEngine
 
 # Person 1 providers (Arpit — replaced in Phases 2–7)
 from app.vision.detector import YOLODetector
-from app.severity.mock_engine import MockSeverityEngine
+from app.severity.engine import SeverityEngine
 from app.rag.mock_retriever import MockRAGRetriever
 from app.llm.mock_generator import MockComplaintGenerator
 
@@ -41,7 +41,7 @@ def get_decision_engine() -> DecisionEngine:
     """
     # Person 1 providers (mocks for now except vision)
     vision = YOLODetector()
-    severity = MockSeverityEngine()
+    severity = SeverityEngine()
     rag = MockRAGRetriever()
     complaint = MockComplaintGenerator()
 
