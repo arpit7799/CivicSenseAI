@@ -1,4 +1,4 @@
-path: /Users/arpit_7799/Documents/Projects/CivicAI/ai-service/datasets/civic_dataset
+path: /Users/arpit_7799/Documents/Projects/CivicAI/backend/datasets/civic_dataset
 train: images/train
 val: images/val
 names:

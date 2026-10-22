@@ -40,23 +40,23 @@ Thumbs.db
 desktop.ini
 
 # ----- Model Weights & Checkpoints -----
-ai-service/models/*.pt
-ai-service/models/*.pth
-ai-service/models/*.onnx
-ai-service/models/*.bin
-ai-service/models/*.safetensors
-ai-service/models/training_runs/
-ai-service/yolov8n.pt
+backend/models/*.pt
+backend/models/*.pth
+backend/models/*.onnx
+backend/models/*.bin
+backend/models/*.safetensors
+backend/models/training_runs/
+backend/yolov8n.pt
 runs/
-!ai-service/models/.gitkeep
+!backend/models/.gitkeep
 
 # ----- Datasets (large files) -----
-ai-service/datasets/*.zip
-ai-service/datasets/*.tar.gz
-ai-service/datasets/images/
-ai-service/datasets/civic_dataset/images/
-ai-service/datasets/**/*.cache
-!ai-service/datasets/.gitkeep
+backend/datasets/*.zip
+backend/datasets/*.tar.gz
+backend/datasets/images/
+backend/datasets/civic_dataset/images/
+backend/datasets/**/*.cache
+!backend/datasets/.gitkeep
 
 # ----- Qdrant Data -----
 qdrant_data/

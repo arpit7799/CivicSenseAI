@@ -9,7 +9,7 @@
 # - water_logging
 # - fallen_tree
 #
-# Saves the resulting fine-tuned model to ai-service/models/civicsense_yolo.pt
+# Saves the resulting fine-tuned model to backend/models/civicsense_yolo.pt
 # =============================================================================
 
 import os

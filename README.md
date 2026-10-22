@@ -76,17 +76,17 @@ CITIZEN → PHOTO + GPS
 
 | Module | Owner | Description |
 |---|---|---|
-| `ai-service/app/vision/` | **Arpit** | Image preprocessing, YOLO detection, classification |
-| `ai-service/app/severity/` | **Arpit** | Severity assessment engine |
-| `ai-service/app/decision/` | **Arpit** | Core AI decision orchestration |
-| `ai-service/app/rag/` | **Arpit** | BGE embeddings, Qdrant retrieval, RAG pipeline |
-| `ai-service/app/llm/` | **Arpit** | Ollama integration, prompt architecture, complaint generation |
-| `ai-service/app/location/` | **Arnav** | Reverse geocoding, geographic normalization |
-| `ai-service/app/authority/` | **Arnav** | Authority routing, verified civic dataset |
-| `ai-service/app/duplicate/` | **Arnav** | Duplicate complaint detection |
-| `ai-service/app/analytics/` | **Arnav** | Hotspot detection, trend analysis |
-| `ai-service/app/contracts/` | **Shared** | Pydantic schemas — API contract |
-| `ai-service/app/core/` | **Shared** | Interfaces, config, logging, errors |
+| `backend/app/vision/` | **Arpit** | Image preprocessing, YOLO detection, classification |
+| `backend/app/severity/` | **Arpit** | Severity assessment engine |
+| `backend/app/decision/` | **Arpit** | Core AI decision orchestration |
+| `backend/app/rag/` | **Arpit** | BGE embeddings, Qdrant retrieval, RAG pipeline |
+| `backend/app/llm/` | **Arpit** | Ollama integration, prompt architecture, complaint generation |
+| `backend/app/location/` | **Arnav** | Reverse geocoding, geographic normalization |
+| `backend/app/authority/` | **Arnav** | Authority routing, verified civic dataset |
+| `backend/app/duplicate/` | **Arnav** | Duplicate complaint detection |
+| `backend/app/analytics/` | **Arnav** | Hotspot detection, trend analysis |
+| `backend/app/contracts/` | **Shared** | Pydantic schemas — API contract |
+| `backend/app/core/` | **Shared** | Interfaces, config, logging, errors |
 
 ---
 
@@ -102,19 +102,19 @@ python3 -m venv .venv
 source .venv/bin/activate
 
 # 3. Install API dependencies
-pip install -r ai-service/requirements.txt
+pip install -r backend/requirements.txt
 
 # Optional: install vision and RAG model dependencies
-# pip install -r ai-service/requirements-ai.txt
+# pip install -r backend/requirements-ai.txt
 # Optional: install the Postgres adapter dependency
-# pip install -r ai-service/requirements-db.txt
+# pip install -r backend/requirements-db.txt
 
 # 4. Configure environment
 cp .env.example .env
 # Edit .env with your settings
 
-# 5. Run from the ai-service directory
-cd ai-service
+# 5. Run from the backend directory
+cd backend
 uvicorn app.main:app --reload
 
 # 6. Run the test suite (install requirements-ai.txt first for model tests)
@@ -176,8 +176,8 @@ The main backend owns complaint records and syncs a read-only projection to the
 AI service. Configure a random `COMPLAINT_INDEX_API_KEY` and send it as a Bearer
 token to `POST /api/v1/complaint-index/upsert`. The default in-memory repository
 is for local development only and loses records on restart. For durable data,
-install `ai-service/requirements-db.txt`, set `COMPLAINT_REPOSITORY=postgres`,
-and apply `ai-service/migrations/001_complaint_index.sql` to a PostgreSQL
+install `backend/requirements-db.txt`, set `COMPLAINT_REPOSITORY=postgres`,
+and apply `backend/migrations/001_complaint_index.sql` to a PostgreSQL
 database with PostGIS installed.
 
 Set `DUPLICATE_PROVIDER=engine` and `ANALYTICS_PROVIDER=engine` to use the
