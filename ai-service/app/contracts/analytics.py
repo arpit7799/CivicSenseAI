@@ -63,7 +63,7 @@ class TrendDataPoint(BaseModel):
 
     period: str = Field(..., description="Time period label, e.g. '2024-W03' or '2024-01-15'")
     count: int = Field(..., ge=0, description="Complaint count for this period")
-    dominant_severity: str = Field(..., description="Most common severity in this period")
+    dominant_severity: str | None = Field(default=None, description="Most common severity, if reports exist")
 
 
 class TrendResult(BaseModel):

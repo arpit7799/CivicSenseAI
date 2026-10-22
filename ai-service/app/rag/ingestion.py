@@ -34,6 +34,7 @@ class DocumentSource:
     verification_status: VerificationStatus = VerificationStatus.GENERAL_GUIDANCE
     department: str | None = None
     jurisdiction: str | None = None
+    verified_at: str | None = None
 
 
 @dataclass
@@ -154,6 +155,7 @@ def _create_chunk(doc: CivicDocument, text: str, index: int) -> DocumentChunk:
         metadata={
             "reference_id": doc.source.reference_id,
             "url": doc.source.url,
+            "verified_at": doc.source.verified_at,
             "chunk_index": index,
         },
     )

@@ -32,10 +32,10 @@ class LocationResult(BaseModel):
     Arpit's code consumes this via the LocationProvider interface.
     """
 
-    address: str = Field(..., description="Resolved street address")
-    city: str = Field(..., description="City name")
-    district: str = Field(..., description="District name")
-    state: str = Field(..., description="State name")
+    address: str | None = Field(default=None, description="Resolved street address, if available")
+    city: str | None = Field(default=None, description="City name, if available")
+    district: str | None = Field(default=None, description="District name, if available")
+    state: str | None = Field(default=None, description="State name, if available")
     ward: str | None = Field(default=None, description="Ward/zone if available")
     zone: str | None = Field(default=None, description="Administrative zone if available")
     pincode: str | None = Field(default=None, description="Postal code if available")
@@ -47,4 +47,8 @@ class LocationResult(BaseModel):
     source: str = Field(
         default="mock",
         description="Result source: 'mock' | 'geocoding_api' | 'nominatim' | etc.",
+    )
+    attribution: str | None = Field(
+        default=None,
+        description="Required attribution text for the geocoding data source, when applicable",
     )

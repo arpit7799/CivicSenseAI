@@ -56,6 +56,24 @@ def test_chunking_preserves_verified_official_source():
     assert first.metadata["reference_id"] == "ENG/2024/01"
 
 
+def test_chunking_preserves_verification_date():
+    doc = CivicDocument(
+        id="DOC-DATED-01",
+        category="general",
+        source=DocumentSource(
+            authority_name="Official Civic Source",
+            title="Published Contact Information",
+            url="https://example.gov/contact",
+            verification_status=VerificationStatus.VERIFIED_OFFICIAL,
+            verified_at="2026-10-22",
+        ),
+        text="The official contact channel is listed here.",
+    )
+
+    chunk = chunk_document(doc)[0]
+    assert chunk.metadata["verified_at"] == "2026-10-22"
+
+
 def test_chunking_preserves_general_guidance_status():
     doc = CivicDocument(
         id="DOC-GUIDE-02",

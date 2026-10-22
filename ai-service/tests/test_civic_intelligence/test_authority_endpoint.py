@@ -65,7 +65,8 @@ async def test_route_authority_supports_di_override(client, sample_location_payl
                 contact_phone="1800111222",
                 office_address="Civic Center",
                 confidence=0.99,
-                source="test_verified_db",
+                source="civic_authority_db",
+                source_reference="https://municipal.gov/test-record",
                 verified_at="2026-10-21T00:00:00Z",
             )
 
@@ -77,6 +78,6 @@ async def test_route_authority_supports_di_override(client, sample_location_payl
         data = response.json()
         assert data["authority_name"] == "Test Municipal Works"
         assert data["contact_email"] == "test.verified@municipal.gov"
-        assert data["source"] == "test_verified_db"
+        assert data["source"] == "civic_authority_db"
     finally:
         app.dependency_overrides.pop(get_authority_provider, None)

@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "records": [
+    {
+      "record_id": "mcg-gurugram-general-civic-grievance",
+      "authority_name": "Municipal Corporation of Gurugram",
+      "department": null,
+      "jurisdiction": "Municipal Corporation of Gurugram",
+      "city_aliases": ["gurugram", "gurgaon"],
+      "state_aliases": ["haryana"],
+      "issue_types": [
+        "pothole",
+        "garbage_dump",
+        "broken_streetlight",
+        "road_damage",
+        "water_logging",
+        "fallen_tree"
+      ],
+      "contact_email": null,
+      "contact_phone": "18001801817",
+      "office_address": "MCG Head Office, Sector 34, Gurugram, Haryana - 122001",
+      "source": "verified_dataset",
+      "source_reference": "https://www.mcg.gov.in/",
+      "verified_at": "2026-10-22",
+      "confidence": 0.65,
+      "verification_note": "MCG official site lists civic grievance/reporting services and its toll-free contact. The source does not verify issue-specific department ownership, so department is intentionally unresolved."
+    }
+  ]
+}

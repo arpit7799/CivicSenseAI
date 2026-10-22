@@ -1,0 +1,11 @@
+# Optional model dependencies for the currently implemented production providers.
+-r requirements.txt
+
+numpy>=1.24.0
+opencv-python-headless>=4.8.0
+torch>=2.0.0
+torchvision>=0.15.0
+ultralytics>=8.0.0
+Pillow>=10.0.0
+qdrant-client>=1.7.0
+sentence-transformers>=2.2.0

@@ -1,16 +1,5 @@
-# =============================================================================
-# CivicSense AI — AI Service Dependencies (Phase 1: Foundation)
-# =============================================================================
-# Only Phase 1 dependencies are installed. Future phases will add:
-#   Phase 2: torch, ultralytics, opencv-python-headless, numpy
-#   Phase 4: scikit-learn
-#   Phase 6: qdrant-client, sentence-transformers (BGE)
-#   Phase 7: ollama, transformers
-# =============================================================================
-
-# Phase 6: Vector Store & Embeddings (RAG)
-qdrant-client>=1.7.0
-sentence-transformers>=2.2.0
+# Lightweight API, mock providers, and test dependencies.
+# Install requirements-ai.txt as well to use the implemented vision/RAG providers.
 
 # Core Framework
 fastapi>=0.104.0
@@ -22,11 +11,3 @@ pydantic-settings>=2.1.0
 pytest>=7.4.0
 pytest-asyncio>=0.23.0
 httpx>=0.25.0
-
-# Phase 2: Computer Vision
-opencv-python-headless>=4.8.0
-numpy>=1.24.0
-torch>=2.0.0
-torchvision>=0.15.0
-ultralytics>=8.0.0
-Pillow>=10.0.0

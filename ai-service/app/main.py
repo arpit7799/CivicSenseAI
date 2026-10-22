@@ -28,7 +28,7 @@ async def lifespan(app: FastAPI):
     logger.info(f"  Log Level: {settings.log_level}")
     logger.info(f"  API Prefix: {settings.api_v1_prefix}")
     logger.info("=" * 60)
-    logger.info("All providers: MOCK (Phase 1 — Foundation)")
+    logger.info("Provider mode: %s", settings.provider_mode)
     logger.info("Service started successfully")
 
     yield  # Application runs here

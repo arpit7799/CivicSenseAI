@@ -45,12 +45,17 @@ ai-service/models/*.pth
 ai-service/models/*.onnx
 ai-service/models/*.bin
 ai-service/models/*.safetensors
+ai-service/models/training_runs/
+ai-service/yolov8n.pt
+runs/
 !ai-service/models/.gitkeep
 
 # ----- Datasets (large files) -----
 ai-service/datasets/*.zip
 ai-service/datasets/*.tar.gz
 ai-service/datasets/images/
+ai-service/datasets/civic_dataset/images/
+ai-service/datasets/**/*.cache
 !ai-service/datasets/.gitkeep
 
 # ----- Qdrant Data -----

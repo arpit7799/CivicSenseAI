@@ -1,0 +1,10 @@
+path: /Users/arpit_7799/Documents/Projects/CivicAI/ai-service/datasets/civic_dataset
+train: images/train
+val: images/val
+names:
+  0: pothole
+  1: garbage_dump
+  2: broken_streetlight
+  3: road_damage
+  4: water_logging
+  5: fallen_tree

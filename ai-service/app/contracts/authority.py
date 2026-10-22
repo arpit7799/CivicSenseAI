@@ -6,11 +6,11 @@
 # Interface defined by Arpit for cross-team integration.
 #
 # CRITICAL: Authority contact information MUST come from verified civic
-# datasets — never from LLM generation. The 'source' and 'verified_at'
-# fields exist to enforce this provenance requirement.
+# datasets — never from LLM generation. Source, source reference, and
+# verification timestamp are required whenever contact fields are present.
 # =============================================================================
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, model_validator
 
 from app.contracts.location import LocationResult
 
@@ -31,9 +31,9 @@ class AuthorityResult(BaseModel):
     Arpit's LLM consumes this verified data but MUST NOT generate it.
     """
 
-    authority_name: str = Field(..., description="Name of the responsible authority")
-    department: str = Field(..., description="Responsible department within the authority")
-    jurisdiction: str = Field(..., description="Jurisdiction area (city, district, etc.)")
+    authority_name: str | None = Field(default=None, description="Name of the responsible authority, if resolved")
+    department: str | None = Field(default=None, description="Responsible department, if resolved")
+    jurisdiction: str | None = Field(default=None, description="Matched jurisdiction, if resolved")
     contact_email: str | None = Field(
         default=None,
         description="Official contact email (from verified dataset only)",
@@ -52,9 +52,30 @@ class AuthorityResult(BaseModel):
     )
     source: str = Field(
         default="mock",
-        description="Data source: 'mock' | 'verified_dataset' | 'civic_authority_db'",
+        description="Data source: 'mock' | 'no_match' | 'verified_dataset' | 'civic_authority_db'",
+    )
+    source_reference: str | None = Field(
+        default=None,
+        description="Official source URL or document identifier for this authority record",
     )
     verified_at: str | None = Field(
         default=None,
         description="ISO timestamp of last verification of this authority record",
     )
+
+    @model_validator(mode="after")
+    def contacts_must_be_verified(self) -> "AuthorityResult":
+        """Prevent unverified authority contacts from reaching complaint generation."""
+        has_contact = any(
+            (self.contact_email, self.contact_phone, self.office_address)
+        )
+        trusted_sources = {"verified_dataset", "civic_authority_db"}
+        if has_contact and (
+            self.source not in trusted_sources
+            or self.verified_at is None
+            or self.source_reference is None
+        ):
+            raise ValueError(
+                "Authority contacts require a verified civic data source, source reference, and verification timestamp"
+            )
+        return self

@@ -7,6 +7,7 @@ from app.api.v1.endpoints import (
     authority,
     duplicate,
     analytics,
+    complaint_index,
 )
 
 __all__ = [
@@ -16,4 +17,5 @@ __all__ = [
     "authority",
     "duplicate",
     "analytics",
+    "complaint_index",
 ]

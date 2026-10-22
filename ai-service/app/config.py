@@ -20,6 +20,25 @@ class Settings(BaseSettings):
     app_version: str = Field(default="0.1.0", description="Application version")
     debug: bool = Field(default=False, description="Debug mode")
     log_level: str = Field(default="INFO", description="Logging level")
+    provider_mode: str = Field(
+        default="mock",
+        pattern="^(mock|production)$",
+        description="Use lightweight mock providers or configured production providers",
+    )
+    location_provider: str = Field(
+        default="mock",
+        pattern="^(mock|nominatim)$",
+        description="Reverse-geocoding provider; Nominatim is opt-in",
+    )
+    authority_provider: str = Field(
+        default="mock",
+        pattern="^(mock|verified_dataset)$",
+        description="Civic authority routing provider",
+    )
+    duplicate_provider: str = Field(default="mock", pattern="^(mock|engine)$")
+    analytics_provider: str = Field(default="mock", pattern="^(mock|engine)$")
+    complaint_repository: str = Field(default="memory", pattern="^(memory|postgres)$")
+    complaint_index_api_key: str | None = Field(default=None, min_length=16)
 
     # ----- AI Service -----
     ai_service_host: str = Field(default="0.0.0.0", description="AI service bind host")
@@ -88,6 +107,19 @@ class Settings(BaseSettings):
         default="postgresql://user:password@localhost:5432/civicsense",
         description="PostgreSQL connection URL",
     )
+
+    # ----- Location Provider -----
+    geocoder_base_url: str = Field(
+        default="https://nominatim.openstreetmap.org",
+        description="Base URL for the configured reverse-geocoding provider",
+    )
+    geocoder_user_agent: str = Field(
+        default="CivicSenseAI/0.1",
+        min_length=3,
+        description="Identifying User-Agent required by public geocoding services",
+    )
+    geocoder_timeout_seconds: float = Field(default=5.0, gt=0.0)
+    geocoder_cache_ttl_seconds: int = Field(default=86400, ge=0)
 
     model_config = {
         "env_file": ".env",

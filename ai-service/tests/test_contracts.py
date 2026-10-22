@@ -139,6 +139,15 @@ class TestLocationResult:
         with pytest.raises(ValidationError):
             Coordinates(latitude=100.0, longitude=77.0266)
 
+    def test_unresolved_location_is_representable(self):
+        result = LocationResult(
+            coordinates=Coordinates(latitude=28.4595, longitude=77.0266),
+            confidence=0.0,
+            source="geocoding_api",
+        )
+        assert result.address is None
+        assert result.city is None
+
 
 class TestAuthorityResult:
     """Tests for AuthorityResult validation."""
@@ -151,6 +160,7 @@ class TestAuthorityResult:
             contact_email="pwd@muncorp.gov.in",
             confidence=0.9,
             source="verified_dataset",
+            source_reference="https://example.gov.in/contact",
             verified_at="2024-01-15T10:00:00Z",
         )
         assert result.source == "verified_dataset"
@@ -167,6 +177,38 @@ class TestAuthorityResult:
         assert result.contact_email is None
         assert result.contact_phone is None
         assert result.verified_at is None
+
+    def test_unresolved_authority_is_representable(self):
+        result = AuthorityResult(
+            confidence=0.0,
+            source="verified_dataset",
+        )
+        assert result.authority_name is None
+        assert result.department is None
+
+    def test_rejects_contacts_without_verification(self):
+        with pytest.raises(ValidationError):
+            AuthorityResult(
+                authority_name="Unverified Authority",
+                department="Public Works",
+                jurisdiction="Test City",
+                contact_email="unverified@example.gov",
+                confidence=0.2,
+                source="mock",
+            )
+
+    def test_rejects_contacts_from_non_civic_source(self):
+        with pytest.raises(ValidationError):
+            AuthorityResult(
+                authority_name="Generated Authority",
+                department="Public Works",
+                jurisdiction="Test City",
+                contact_email="generated@example.gov",
+                confidence=0.9,
+                source="llm",
+                source_reference="prompt-output",
+                verified_at="2024-01-15T10:00:00Z",
+            )
 
 
 class TestComplaintResult:

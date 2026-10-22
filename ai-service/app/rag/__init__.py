@@ -1,26 +1,6 @@
 # CivicSense AI — RAG Package
 # Owner: Arpit (Person 1)
-
-from app.rag.retriever import QdrantRAGRetriever
-from app.rag.embeddings import EmbeddingModel, MockEmbeddingModel, BGEEmbeddingModel
-from app.rag.ingestion import (
-    CivicDocument,
-    DocumentChunk,
-    DocumentSource,
-    VerificationStatus,
-    chunk_document,
-)
-from app.rag.seed_corpus import SEED_CIVIC_DOCUMENTS
-
-__all__ = [
-    "QdrantRAGRetriever",
-    "EmbeddingModel",
-    "MockEmbeddingModel",
-    "BGEEmbeddingModel",
-    "CivicDocument",
-    "DocumentChunk",
-    "DocumentSource",
-    "VerificationStatus",
-    "chunk_document",
-    "SEED_CIVIC_DOCUMENTS",
-]
+#
+# Keep package imports lightweight. Production RAG dependencies (NumPy,
+# sentence-transformers, and Qdrant) are imported by their implementation
+# modules, not merely by importing the mock provider or API application.
