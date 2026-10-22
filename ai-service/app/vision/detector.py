@@ -60,8 +60,12 @@ class YOLODetector(VisionProvider):
         start_time = time.time()
         
         # 1. Download / Load
-        if image_path.startswith("http"):
+        if image_path.startswith("http://") or image_path.startswith("https://"):
             image_bytes = await download_image(image_path)
+        elif image_path.startswith("data:image"):
+            import base64
+            _, base64_payload = image_path.split(",", 1)
+            image_bytes = base64.b64decode(base64_payload)
         else:
             try:
                 with open(image_path, "rb") as f:
