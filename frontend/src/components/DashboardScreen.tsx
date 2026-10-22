@@ -15,7 +15,16 @@ import {
   Activity,
   Layers,
   BarChart3,
+  BellRing,
+  BookOpen,
+  Compass,
+  Users,
+  Building2,
+  PhoneCall,
+  Search,
 } from "lucide-react";
+import GovCarousel from "@/components/GovCarousel";
+import GovPartnersRibbon from "@/components/GovPartnersRibbon";
 import { fetchCivicHotspots, fetchCivicTrends, getStoredComplaints } from "@/lib/api";
 import { StoredComplaint } from "@/lib/types";
 
@@ -34,6 +43,7 @@ export default function DashboardScreen({
   const [hotspotsData, setHotspotsData] = useState<any>(null);
   const [trendsData, setTrendsData] = useState<any>(null);
   const [loadingAnalytics, setLoadingAnalytics] = useState<boolean>(true);
+  const [trackingSearch, setTrackingSearch] = useState<string>("");
 
   useEffect(() => {
     // Read local stored complaints
@@ -60,106 +70,174 @@ export default function DashboardScreen({
   }, []);
 
   return (
-    <div className="space-y-8 max-w-6xl mx-auto">
-      {/* Hero Section */}
-      <div className="relative rounded-3xl overflow-hidden bg-gradient-to-br from-slate-900 via-slate-900/90 to-slate-950 border border-slate-800 p-8 sm:p-10 shadow-2xl">
-        <div className="absolute top-0 right-0 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute bottom-0 left-0 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none" />
+    <div className="space-y-8 max-w-7xl mx-auto">
+      {/* 1. Official Government Alert & Announcement Marquee Ticker */}
+      <div className="bg-[#0b192c] border border-amber-500/30 rounded-2xl p-3 shadow-lg flex items-center space-x-3 text-xs overflow-hidden">
+        <div className="flex items-center space-x-1.5 px-3 py-1 rounded-xl bg-amber-500/20 text-amber-300 font-bold shrink-0 border border-amber-500/30">
+          <BellRing className="w-3.5 h-3.5 text-amber-400" />
+          <span>नागरिक सूचना (NOTICE)</span>
+        </div>
+        <div className="text-slate-300 truncate">
+          <span className="font-semibold text-white">हरियाणा नगर निगम नागरिक अधिकार पत्र 2024:</span>{" "}
+          Under statutory mandate, all pothole, sanitation, and electrical grievances submitted through CivicSense AI receive automated municipal dispatch with a 24–72 hour physical inspection guarantee. Call 24x7 Control Room:{" "}
+          <strong className="text-amber-300 font-mono">1800-180-1817</strong>.
+        </div>
+      </div>
 
-        <div className="relative z-10 max-w-2xl space-y-4">
-          <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-semibold">
-            <Sparkles className="w-3.5 h-3.5" />
-            <span>CivicSense AI Citizen Platform</span>
+      {/* 2. Authentic Government Hero Slideshow / Carousel */}
+      <GovCarousel
+        onNavigateReport={onNavigateReport}
+        onNavigateTracking={onNavigateTracking}
+        onNavigateMatrix={onNavigateMatrix}
+      />
+
+      {/* 3. Quick Citizen Services Portal Tiles (Government Style) */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        {/* Tile 1: File Grievance */}
+        <div
+          onClick={onNavigateReport}
+          className="group bg-gradient-to-br from-slate-900 to-slate-950 border border-slate-800 hover:border-emerald-500/50 rounded-2xl p-5 shadow-xl transition-all hover:scale-[1.02] cursor-pointer"
+        >
+          <div className="w-12 h-12 rounded-xl bg-emerald-950/80 border border-emerald-500/30 flex items-center justify-center text-emerald-400 group-hover:scale-110 transition-transform">
+            <PlusCircle className="w-6 h-6" />
           </div>
-
-          <h1 className="text-3xl sm:text-5xl font-extrabold text-white tracking-tight leading-tight">
-            Report Civic Issues. <br />
-            <span className="bg-gradient-to-r from-emerald-400 via-cyan-400 to-indigo-400 bg-clip-text text-transparent">
-              Empower Municipal Action.
-            </span>
-          </h1>
-
-          <p className="text-slate-300 text-sm sm:text-base leading-relaxed">
-            Upload road defects, sanitation overflow, or broken streetlights. Our multimodal vision AI detects the issue, calculates risk severity, identifies the verified municipal authority, and drafts an official complaint letter in seconds.
+          <h3 className="mt-4 font-extrabold text-base text-white group-hover:text-emerald-400 transition-colors">
+            नागरिक शिकायत दर्ज करें
+          </h3>
+          <p className="text-xs font-semibold text-slate-400">File Civic Grievance</p>
+          <p className="mt-2 text-xs text-slate-400 leading-relaxed">
+            Upload photographs of potholes, garbage piles, or broken lights for AI detection and direct routing.
           </p>
+          <div className="mt-4 flex items-center text-xs font-bold text-emerald-400 group-hover:translate-x-1 transition-transform">
+            <span>Proceed to File</span>
+            <ArrowRight className="w-3.5 h-3.5 ml-1" />
+          </div>
+        </div>
 
-          <div className="flex flex-wrap items-center gap-3 pt-3">
-            <button
-              onClick={onNavigateReport}
-              className="px-6 py-3.5 rounded-xl font-bold text-sm bg-gradient-to-r from-emerald-400 to-cyan-400 hover:from-emerald-300 hover:to-cyan-300 text-slate-950 shadow-lg shadow-emerald-500/25 hover:shadow-emerald-500/40 transition-all flex items-center space-x-2 cursor-pointer"
-            >
-              <PlusCircle className="w-5 h-5 font-bold" />
-              <span>Report a Civic Issue Now</span>
-            </button>
+        {/* Tile 2: Track Status */}
+        <div
+          onClick={onNavigateTracking}
+          className="group bg-gradient-to-br from-slate-900 to-slate-950 border border-slate-800 hover:border-cyan-500/50 rounded-2xl p-5 shadow-xl transition-all hover:scale-[1.02] cursor-pointer"
+        >
+          <div className="w-12 h-12 rounded-xl bg-cyan-950/80 border border-cyan-500/30 flex items-center justify-center text-cyan-400 group-hover:scale-110 transition-transform">
+            <FileText className="w-6 h-6" />
+          </div>
+          <h3 className="mt-4 font-extrabold text-base text-white group-hover:text-cyan-400 transition-colors">
+            शिकायत स्थिति देखें
+          </h3>
+          <p className="text-xs font-semibold text-slate-400">Track Complaint Status</p>
+          <p className="mt-2 text-xs text-slate-400 leading-relaxed">
+            Audit your registered municipal reference tickets (`CIVIC-2026-XXXX`) and view inspection reports.
+          </p>
+          <div className="mt-4 flex items-center text-xs font-bold text-cyan-400 group-hover:translate-x-1 transition-transform">
+            <span>Track Registry</span>
+            <ArrowRight className="w-3.5 h-3.5 ml-1" />
+          </div>
+        </div>
 
-            <button
-              onClick={onNavigateMatrix}
-              className="px-5 py-3.5 rounded-xl font-semibold text-sm bg-slate-800/80 hover:bg-slate-700/80 text-slate-200 border border-slate-700 transition-all flex items-center space-x-2 cursor-pointer"
-            >
-              <Activity className="w-4 h-4 text-cyan-400" />
-              <span>Interactive Test Matrix</span>
-            </button>
+        {/* Tile 3: Citizen Charter */}
+        <div
+          onClick={onNavigateMatrix}
+          className="group bg-gradient-to-br from-slate-900 to-slate-950 border border-slate-800 hover:border-amber-500/50 rounded-2xl p-5 shadow-xl transition-all hover:scale-[1.02] cursor-pointer"
+        >
+          <div className="w-12 h-12 rounded-xl bg-amber-950/80 border border-amber-500/30 flex items-center justify-center text-amber-400 group-hover:scale-110 transition-transform">
+            <BookOpen className="w-6 h-6" />
+          </div>
+          <h3 className="mt-4 font-extrabold text-base text-white group-hover:text-amber-400 transition-colors">
+            नागरिक अधिकार पत्र
+          </h3>
+          <p className="text-xs font-semibold text-slate-400">Citizen Charter Rules</p>
+          <p className="mt-2 text-xs text-slate-400 leading-relaxed">
+            Review statutory resolution timelines, escalation hierarchy, and legal redressal provisions.
+          </p>
+          <div className="mt-4 flex items-center text-xs font-bold text-amber-400 group-hover:translate-x-1 transition-transform">
+            <span>View Provisions</span>
+            <ArrowRight className="w-3.5 h-3.5 ml-1" />
+          </div>
+        </div>
+
+        {/* Tile 4: Ward & Engineering Locator */}
+        <div
+          onClick={onNavigateReport}
+          className="group bg-gradient-to-br from-slate-900 to-slate-950 border border-slate-800 hover:border-indigo-500/50 rounded-2xl p-5 shadow-xl transition-all hover:scale-[1.02] cursor-pointer"
+        >
+          <div className="w-12 h-12 rounded-xl bg-indigo-950/80 border border-indigo-500/30 flex items-center justify-center text-indigo-400 group-hover:scale-110 transition-transform">
+            <Compass className="w-6 h-6" />
+          </div>
+          <h3 className="mt-4 font-extrabold text-base text-white group-hover:text-indigo-400 transition-colors">
+            वार्ड एवं क्षेत्रीय अभियंता
+          </h3>
+          <p className="text-xs font-semibold text-slate-400">Ward & JE Directory</p>
+          <p className="mt-2 text-xs text-slate-400 leading-relaxed">
+            Geographic reverse geocoding pinpoints your exact ward, municipal zone, and assigned engineer.
+          </p>
+          <div className="mt-4 flex items-center text-xs font-bold text-indigo-400 group-hover:translate-x-1 transition-transform">
+            <span>Locate Ward</span>
+            <ArrowRight className="w-3.5 h-3.5 ml-1" />
           </div>
         </div>
       </div>
 
-      {/* Metrics Row */}
+      {/* 4. Official E-Governance & Mission Integrations Ribbon */}
+      <GovPartnersRibbon />
+
+      {/* 5. Metrics Row */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="bg-slate-900/80 border border-slate-800 p-5 rounded-2xl space-y-1">
+        <div className="bg-slate-900/90 border border-slate-800 p-5 rounded-2xl space-y-1">
           <div className="flex items-center justify-between text-slate-400 text-xs font-semibold">
-            <span>My Complaints</span>
+            <span>My Registered Complaints</span>
             <FileText className="w-4 h-4 text-emerald-400" />
           </div>
           <p className="text-2xl sm:text-3xl font-extrabold text-white">{complaints.length}</p>
-          <p className="text-[11px] text-slate-500">Tracked in local registry</p>
+          <p className="text-[11px] text-slate-500">Tracked in citizen portal</p>
         </div>
 
-        <div className="bg-slate-900/80 border border-slate-800 p-5 rounded-2xl space-y-1">
+        <div className="bg-slate-900/90 border border-slate-800 p-5 rounded-2xl space-y-1">
           <div className="flex items-center justify-between text-slate-400 text-xs font-semibold">
-            <span>Draft Ready</span>
+            <span>Draft Ready Tickets</span>
             <CheckCircle2 className="w-4 h-4 text-cyan-400" />
           </div>
           <p className="text-2xl sm:text-3xl font-extrabold text-white">
             {complaints.filter((c) => c.status === "Draft Ready").length}
           </p>
-          <p className="text-[11px] text-slate-500">Formatted & verified</p>
+          <p className="text-[11px] text-slate-500">Validated with legal charter</p>
         </div>
 
-        <div className="bg-slate-900/80 border border-slate-800 p-5 rounded-2xl space-y-1">
+        <div className="bg-slate-900/90 border border-slate-800 p-5 rounded-2xl space-y-1">
           <div className="flex items-center justify-between text-slate-400 text-xs font-semibold">
-            <span>Civic Hotspots</span>
+            <span>Active City Hotspots</span>
             <Flame className="w-4 h-4 text-rose-400" />
           </div>
           <p className="text-2xl sm:text-3xl font-extrabold text-white">
             {hotspotsData?.hotspots?.length ?? 3}
           </p>
-          <p className="text-[11px] text-slate-500">Active clusters in Gurugram</p>
+          <p className="text-[11px] text-slate-500">Monitored clusters in Gurugram</p>
         </div>
 
-        <div className="bg-slate-900/80 border border-slate-800 p-5 rounded-2xl space-y-1">
+        <div className="bg-slate-900/90 border border-slate-800 p-5 rounded-2xl space-y-1">
           <div className="flex items-center justify-between text-slate-400 text-xs font-semibold">
-            <span>AI Vision Accuracy</span>
+            <span>Vision AI Accuracy</span>
             <TrendingUp className="w-4 h-4 text-amber-400" />
           </div>
           <p className="text-2xl sm:text-3xl font-extrabold text-white">91.5%</p>
-          <p className="text-[11px] text-slate-500">Trained YOLOv8 mAP50</p>
+          <p className="text-[11px] text-slate-500">YOLOv8 mAP50 benchmark</p>
         </div>
       </div>
 
-      {/* Two Column Section: Live Hotspots & Recent Complaints */}
+      {/* 6. Two Column Section: Live Hotspots & Recent Complaints */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Nearby Civic Issues & Hotspots */}
         <div className="bg-slate-900/90 border border-slate-800 rounded-2xl p-6 shadow-xl space-y-4">
           <div className="flex items-center justify-between border-b border-slate-800 pb-3">
             <div className="flex items-center space-x-2">
               <Flame className="w-5 h-5 text-amber-400" />
-              <h2 className="text-base font-bold text-white">Nearby Civic Hotspots</h2>
+              <h2 className="text-base font-bold text-white">Nearby Civic Hotspots (Gurugram)</h2>
             </div>
             <span className="text-xs text-slate-400">Sector 34 & Vicinity (10km)</span>
           </div>
 
           <div className="space-y-3">
-            <div className="bg-slate-950/60 border border-slate-800/80 p-3.5 rounded-xl space-y-1.5">
+            <div className="bg-slate-950/70 border border-slate-800/80 p-3.5 rounded-xl space-y-1.5">
               <div className="flex items-center justify-between">
                 <span className="font-semibold text-xs text-white flex items-center space-x-1.5">
                   <MapPin className="w-3.5 h-3.5 text-rose-400" />
@@ -170,7 +248,7 @@ export default function DashboardScreen({
                 </span>
               </div>
               <p className="text-[11px] text-slate-400">
-                Potholes and waterlogging near intersection causing traffic delays.
+                Potholes and monsoon waterlogging near arterial transit junction.
               </p>
               <div className="flex items-center space-x-3 text-[10px] text-slate-500 pt-1">
                 <span>Authority: Municipal Corp. of Gurugram</span>
@@ -178,11 +256,11 @@ export default function DashboardScreen({
               </div>
             </div>
 
-            <div className="bg-slate-950/60 border border-slate-800/80 p-3.5 rounded-xl space-y-1.5">
+            <div className="bg-slate-950/70 border border-slate-800/80 p-3.5 rounded-xl space-y-1.5">
               <div className="flex items-center justify-between">
                 <span className="font-semibold text-xs text-white flex items-center space-x-1.5">
                   <MapPin className="w-3.5 h-3.5 text-amber-400" />
-                  <span>Sector 38 Main Market Junction</span>
+                  <span>Sector 38 Main Commercial Market</span>
                 </span>
                 <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-amber-950 text-amber-400 border border-amber-800">
                   Moderate (4 Issues)
@@ -192,12 +270,12 @@ export default function DashboardScreen({
                 Sanitation bins overflowing near commercial complex sidewalk.
               </p>
               <div className="flex items-center space-x-3 text-[10px] text-slate-500 pt-1">
-                <span>Authority: MCG Sanitation Wing</span>
+                <span>Authority: MCG Sanitation Division</span>
                 <span>Ward: 32</span>
               </div>
             </div>
 
-            <div className="bg-slate-950/60 border border-slate-800/80 p-3.5 rounded-xl space-y-1.5">
+            <div className="bg-slate-950/70 border border-slate-800/80 p-3.5 rounded-xl space-y-1.5">
               <div className="flex items-center justify-between">
                 <span className="font-semibold text-xs text-white flex items-center space-x-1.5">
                   <MapPin className="w-3.5 h-3.5 text-cyan-400" />
@@ -223,14 +301,14 @@ export default function DashboardScreen({
           <div className="flex items-center justify-between border-b border-slate-800 pb-3">
             <div className="flex items-center space-x-2">
               <FileText className="w-5 h-5 text-emerald-400" />
-              <h2 className="text-base font-bold text-white">Recent Complaints</h2>
+              <h2 className="text-base font-bold text-white">Recent Complaints Log</h2>
             </div>
             {complaints.length > 0 && (
               <button
                 onClick={onNavigateTracking}
-                className="text-xs text-emerald-400 hover:text-emerald-300 flex items-center space-x-1"
+                className="text-xs text-emerald-400 hover:text-emerald-300 flex items-center space-x-1 cursor-pointer"
               >
-                <span>View All</span>
+                <span>View Full Registry</span>
                 <ArrowRight className="w-3.5 h-3.5" />
               </button>
             )}
@@ -253,10 +331,10 @@ export default function DashboardScreen({
                 <div
                   key={item.id}
                   onClick={onNavigateTracking}
-                  className="bg-slate-950/60 border border-slate-800/80 hover:border-slate-700 p-3.5 rounded-xl cursor-pointer transition-all space-y-1.5"
+                  className="bg-slate-950/70 border border-slate-800/80 hover:border-slate-700 p-3.5 rounded-xl cursor-pointer transition-all space-y-1.5"
                 >
                   <div className="flex items-center justify-between">
-                    <span className="font-mono text-xs font-bold text-cyan-300">
+                    <span className="font-mono text-xs font-bold text-amber-300">
                       {item.reference_no}
                     </span>
                     <span className="text-[10px] font-semibold px-2 py-0.5 rounded bg-emerald-950 text-emerald-400 border border-emerald-800">
