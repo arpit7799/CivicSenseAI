@@ -102,6 +102,20 @@ def get_complaint_repository() -> ComplaintRepository:
 
 
 @lru_cache()
+def get_complaint_generator() -> ComplaintGenerator:
+    """Return configured ComplaintGenerator."""
+    settings = get_settings()
+    if settings.complaint_provider == "mock":
+        from app.llm.mock_generator import MockComplaintGenerator
+
+        return MockComplaintGenerator()
+
+    from app.llm.generator import OllamaComplaintGenerator
+
+    return OllamaComplaintGenerator()
+
+
+@lru_cache()
 def get_decision_engine() -> DecisionEngine:
     """
     Build and cache the DecisionEngine with all providers.
@@ -119,22 +133,20 @@ def get_decision_engine() -> DecisionEngine:
         from app.vision.detector import YOLODetector
         from app.severity.engine import SeverityEngine
         from app.rag.retriever import QdrantRAGRetriever
-        from app.llm.generator import OllamaComplaintGenerator
 
         vision = YOLODetector()
         severity = SeverityEngine()
         rag = QdrantRAGRetriever()
-        complaint = OllamaComplaintGenerator()
     else:
         from app.vision.mock_detector import MockVisionDetector
         from app.severity.mock_engine import MockSeverityEngine
         from app.rag.mock_retriever import MockRAGRetriever
-        from app.llm.mock_generator import MockComplaintGenerator
 
         vision = MockVisionDetector()
         severity = MockSeverityEngine()
         rag = MockRAGRetriever()
-        complaint = MockComplaintGenerator()
+
+    complaint = get_complaint_generator()
 
     # Civic intelligence providers
     location = get_location_provider()

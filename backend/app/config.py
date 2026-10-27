@@ -37,6 +37,11 @@ class Settings(BaseSettings):
     )
     duplicate_provider: str = Field(default="mock", pattern="^(mock|engine)$")
     analytics_provider: str = Field(default="mock", pattern="^(mock|engine)$")
+    complaint_provider: str = Field(
+        default="ollama",
+        pattern="^(mock|ollama)$",
+        description="Complaint generation provider: 'ollama' uses local LLM, 'mock' uses offline deterministic template",
+    )
     complaint_repository: str = Field(default="memory", pattern="^(memory|postgres)$")
     complaint_index_api_key: str | None = Field(default=None, min_length=16)
 
