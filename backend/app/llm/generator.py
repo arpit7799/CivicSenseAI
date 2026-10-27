@@ -68,8 +68,10 @@ class OllamaComplaintGenerator(ComplaintGenerator):
 
     @staticmethod
     def _clean_json_output(text: str) -> str:
-        """Strip markdown code fence blocks if returned by the model."""
+        """Strip thinking tags and markdown code fence blocks if returned by the model."""
         text = text.strip()
+        # Remove <think>...</think> block if emitted by thinking models
+        text = re.sub(r"<think>.*?</think>", "", text, flags=re.DOTALL).strip()
         # Remove ```json ... ``` or ``` ... ```
         if text.startswith("```"):
             text = re.sub(r"^```(?:json)?\s*", "", text, flags=re.IGNORECASE)

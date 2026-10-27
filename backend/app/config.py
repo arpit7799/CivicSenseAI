@@ -88,9 +88,9 @@ class Settings(BaseSettings):
     # ----- Ollama (Phase 7) -----
     ollama_host: str = Field(default="localhost", description="Ollama server host")
     ollama_port: int = Field(default=11434, description="Ollama server port")
-    ollama_model: str = Field(default="llama3.2", description="Ollama model name")
-    ollama_timeout_seconds: float = Field(default=30.0, description="Ollama HTTP request timeout in seconds")
-    llm_temperature: float = Field(default=0.2, description="LLM sampling temperature (low for deterministic structured output)")
+    ollama_model: str = Field(default="civicsense-qwen3", description="Ollama model name (tuned from qwen3:4b)")
+    ollama_timeout_seconds: float = Field(default=45.0, description="Ollama HTTP request timeout in seconds")
+    llm_temperature: float = Field(default=0.15, description="LLM sampling temperature (low for deterministic structured output)")
 
     # ----- BGE Embeddings (Phase 6) -----
     bge_model_name: str = Field(
