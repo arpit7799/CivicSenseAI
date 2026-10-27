@@ -2,8 +2,6 @@
 # CivicSense AI — Location Contracts
 # =============================================================================
 # Pydantic schemas for location intelligence results.
-# Owner: Arnav Yadav (Person 2)
-# Interface defined by Arpit for cross-team integration.
 # =============================================================================
 
 from pydantic import BaseModel, Field
@@ -27,9 +25,6 @@ class LocationResult(BaseModel):
     """
     Location intelligence result — resolves GPS coordinates into
     structured geographic context.
-
-    Implementation owner: Arnav (Person 2).
-    Arpit's code consumes this via the LocationProvider interface.
     """
 
     address: str | None = Field(default=None, description="Resolved street address, if available")

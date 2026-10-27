@@ -2,8 +2,6 @@
 # CivicSense AI — Authority Contracts
 # =============================================================================
 # Pydantic schemas for authority routing results.
-# Owner: Arnav Yadav (Person 2)
-# Interface defined by Arpit for cross-team integration.
 #
 # CRITICAL: Authority contact information MUST come from verified civic
 # datasets — never from LLM generation. Source, source reference, and
@@ -26,9 +24,6 @@ class AuthorityResult(BaseModel):
     """
     Authority routing result — maps issue type + jurisdiction to the
     responsible civic authority and department.
-
-    Implementation owner: Arnav (Person 2).
-    Arpit's LLM consumes this verified data but MUST NOT generate it.
     """
 
     authority_name: str | None = Field(default=None, description="Name of the responsible authority, if resolved")

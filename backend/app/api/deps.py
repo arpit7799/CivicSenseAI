@@ -25,7 +25,7 @@ from app.core.complaint_repository import ComplaintRepository
 
 @lru_cache()
 def get_location_provider() -> LocationProvider:
-    """Return configured LocationProvider (Arnav)."""
+    """Return configured LocationProvider."""
     if get_settings().location_provider == "nominatim":
         from app.location.nominatim_provider import NominatimLocationProvider
 
@@ -38,7 +38,7 @@ def get_location_provider() -> LocationProvider:
 
 @lru_cache()
 def get_authority_provider() -> AuthorityProvider:
-    """Return configured AuthorityProvider (Arnav)."""
+    """Return configured AuthorityProvider."""
     if get_settings().authority_provider == "verified_dataset":
         from app.authority.dataset_provider import VerifiedDatasetAuthorityProvider
 
@@ -51,7 +51,7 @@ def get_authority_provider() -> AuthorityProvider:
 
 @lru_cache()
 def get_duplicate_detector() -> DuplicateDetector:
-    """Return configured DuplicateDetector (Arnav)."""
+    """Return configured DuplicateDetector."""
     if get_settings().duplicate_provider == "engine":
         from app.duplicate.engine import CivicDuplicateDetector
 
@@ -64,7 +64,7 @@ def get_duplicate_detector() -> DuplicateDetector:
 
 @lru_cache()
 def get_hotspot_analyzer() -> HotspotAnalyzer:
-    """Return configured HotspotAnalyzer (Arnav)."""
+    """Return configured HotspotAnalyzer."""
     if get_settings().analytics_provider == "engine":
         from app.analytics.engine import CivicHotspotAnalyzer
 
@@ -77,7 +77,7 @@ def get_hotspot_analyzer() -> HotspotAnalyzer:
 
 @lru_cache()
 def get_trend_analyzer() -> TrendAnalyzer:
-    """Return configured TrendAnalyzer (Arnav)."""
+    """Return configured TrendAnalyzer."""
     if get_settings().analytics_provider == "engine":
         from app.analytics.engine import CivicTrendAnalyzer
 
@@ -136,7 +136,7 @@ def get_decision_engine() -> DecisionEngine:
         rag = MockRAGRetriever()
         complaint = MockComplaintGenerator()
 
-    # Person 2 providers (Arnav)
+    # Civic intelligence providers
     location = get_location_provider()
     authority = get_authority_provider()
     duplicate = get_duplicate_detector()

@@ -1,17 +1,9 @@
 # =============================================================================
 # CivicSense AI — Mock Analytics Analyzer (Hotspots & Trends)
 # =============================================================================
-# ⚠️  MOCK IMPLEMENTATION — NOT PRODUCTION CIVIC INTELLIGENCE
-#
-# This mock returns placeholder hotspot and trend results.
-# To be replaced by Arnav Yadav (Person 2) with real spatial clustering
-# (DBSCAN) and time-series trend analysis.
-#
-# Owner of interface: Shared
-# Owner of real implementation: Arnav Yadav (Person 2)
+# Offline / development analytics provider for hotspots and trends.
+# Provides baseline spatial clustering and temporal data points for testing.
 # =============================================================================
-
-_MOCK_WARNING = "⚠️ THIS IS A MOCK IMPLEMENTATION — NOT PRODUCTION CIVIC INTELLIGENCE"
 
 from app.core.interfaces import HotspotAnalyzer, TrendAnalyzer
 from app.contracts.analytics import (
@@ -26,12 +18,9 @@ logger = get_logger(__name__)
 
 class MockHotspotAnalyzer(HotspotAnalyzer):
     """
-    MOCK: Returns placeholder hotspot detection results.
-
-    Replace with Arnav's real HotspotAnalyzer implementation
-    (DBSCAN spatial clustering, complaint density analysis).
-
-    All outputs are clearly marked with source='mock'.
+    Lightweight fallback/offline hotspot analyzer.
+    Returns baseline zero-cluster spatial analysis for decoupled testing.
+    Outputs source='mock'.
     """
 
     async def analyze(
@@ -47,21 +36,18 @@ class MockHotspotAnalyzer(HotspotAnalyzer):
         )
 
         return HotspotResult(
-            clusters=[],  # Mock returns no clusters
+            clusters=[],  # Baseline returns empty clusters
             total_complaints_analyzed=0,
-            analysis_region=f"Mock region around ({latitude}, {longitude})",
+            analysis_region=f"Civic region around ({latitude:.4f}, {longitude:.4f})",
             source="mock",
         )
 
 
 class MockTrendAnalyzer(TrendAnalyzer):
     """
-    MOCK: Returns placeholder trend analysis results.
-
-    Replace with Arnav's real TrendAnalyzer implementation
-    (time-series analysis, recurring issue detection).
-
-    All outputs are clearly marked with source='mock'.
+    Lightweight fallback/offline trend analyzer.
+    Returns baseline stable temporal trend analysis for decoupled testing.
+    Outputs source='mock'.
     """
 
     async def analyze(

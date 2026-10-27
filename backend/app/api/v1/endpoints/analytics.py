@@ -2,8 +2,6 @@
 # CivicSense AI — Civic Analytics Endpoints (Hotspots & Trends)
 # =============================================================================
 # Endpoints for spatial hotspot clustering and time-series trend analysis.
-# Owner of interface: Arpit (Person 1)
-# Owner of concrete implementation: Arnav Yadav (Person 2)
 # =============================================================================
 
 from fastapi import APIRouter, Depends

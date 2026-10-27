@@ -7,12 +7,9 @@
 # ARCHITECTURE RULE:
 # - The decision engine depends on these interfaces, NEVER on concrete
 #   implementations.
-# - Person 1 (Arpit) implements: VisionProvider, SeverityProvider,
-#   RAGProvider, ComplaintGenerator
-# - Person 2 (Arnav) implements: LocationProvider, AuthorityProvider,
-#   DuplicateDetector, HotspotAnalyzer, TrendAnalyzer
-# - During development, mock implementations are used for any provider
-#   not yet implemented.
+# - Image & Reasoning: VisionProvider, SeverityProvider, RAGProvider, ComplaintGenerator
+# - Civic Intelligence: LocationProvider, AuthorityProvider, DuplicateDetector, HotspotAnalyzer, TrendAnalyzer
+# - During development and testing, offline providers are used when external services are unavailable.
 # =============================================================================
 
 from abc import ABC, abstractmethod
@@ -27,7 +24,7 @@ from app.contracts.analytics import HotspotResult, TrendResult
 
 
 # =============================================================================
-# Person 1 (Arpit) Interfaces
+# Image & Reasoning Interfaces
 # =============================================================================
 
 class VisionProvider(ABC):
@@ -99,14 +96,13 @@ class ComplaintGenerator(ABC):
 
 
 # =============================================================================
-# Person 2 (Arnav) Interfaces
+# Civic Intelligence Interfaces
 # =============================================================================
 
 class LocationProvider(ABC):
     """
     Interface for location intelligence / reverse geocoding.
 
-    Owner: Arnav Yadav (Person 2)
     Consumes: GPS coordinates (latitude, longitude)
     Produces: LocationResult with address, city, district, state, etc.
     """
@@ -121,7 +117,6 @@ class AuthorityProvider(ABC):
     """
     Interface for civic authority routing.
 
-    Owner: Arnav Yadav (Person 2)
     Consumes: issue type + LocationResult
     Produces: AuthorityResult with authority, department, and contact info
 
@@ -141,7 +136,6 @@ class DuplicateDetector(ABC):
     """
     Interface for duplicate complaint detection.
 
-    Owner: Arnav Yadav (Person 2)
     Consumes: complaint data (location, issue type, description, image)
     Produces: DuplicateResult with similarity score and match factors
     """
@@ -163,7 +157,6 @@ class HotspotAnalyzer(ABC):
     """
     Interface for civic hotspot detection.
 
-    Owner: Arnav Yadav (Person 2)
     Consumes: geographic region + optional filters
     Produces: HotspotResult with spatial clusters
     """
@@ -184,7 +177,6 @@ class TrendAnalyzer(ABC):
     """
     Interface for civic trend analysis.
 
-    Owner: Arnav Yadav (Person 2)
     Consumes: issue type + region + time window
     Produces: TrendResult with trend direction and time-series data
     """

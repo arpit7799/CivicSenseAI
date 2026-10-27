@@ -2,8 +2,6 @@
 # CivicSense AI — Location Intelligence Endpoints
 # =============================================================================
 # Endpoint for GPS reverse geocoding and geographic normalization.
-# Owner of interface: Arpit (Person 1)
-# Owner of concrete implementation: Arnav Yadav (Person 2)
 # =============================================================================
 
 from fastapi import APIRouter, Depends

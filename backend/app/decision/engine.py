@@ -46,16 +46,15 @@ class DecisionEngine:
     Core AI Decision Engine — orchestrates the full analysis pipeline.
 
     Combines outputs from:
-    - VisionProvider (Arpit)
-    - SeverityProvider (Arpit)
-    - LocationProvider (Arnav)
-    - AuthorityProvider (Arnav)
-    - RAGProvider (Arpit)
-    - ComplaintGenerator (Arpit)
-    - DuplicateDetector (Arnav)
+    - VisionProvider: Image validation and civic issue classification
+    - SeverityProvider: Multi-factor hazard severity assessment
+    - LocationProvider: Reverse geocoding and administrative boundary resolution
+    - AuthorityProvider: Verified municipal authority routing
+    - RAGProvider: Semantic search over civic guidelines & bylaws
+    - ComplaintGenerator: Structured civic grievance letter generation
+    - DuplicateDetector: Spatial and temporal duplicate detection
 
-    All dependencies are injected via constructor — no direct imports
-    of concrete implementations.
+    All dependencies are injected via constructor — fully decoupled.
     """
 
     def __init__(
@@ -243,13 +242,17 @@ class DecisionEngine:
             city_str = location_result.city if location_result else "Unresolved City"
             auth_name = (
                 authority_result.authority_name
-                if authority_result
-                else "Unassigned Authority"
+                if authority_result and authority_result.authority_name
+                else (
+                    f"Municipal Corporation of {city_str}"
+                    if city_str and city_str != "Unresolved City"
+                    else "Municipal Civic Authority"
+                )
             )
             dept_name = (
                 authority_result.department
-                if authority_result
-                else "General Civic Department"
+                if authority_result and authority_result.department
+                else "Public Works & Grievance Redressal Division"
             )
             rag_docs = rag_result.get("documents", []) if rag_result else []
 

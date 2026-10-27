@@ -19,10 +19,8 @@ logger = get_logger(__name__)
 
 class MockRAGRetriever(RAGProvider):
     """
-    MOCK: Returns placeholder RAG retrieval results.
-
-    Replace with real BGE embedding + Qdrant retrieval pipeline in Phase 6.
-    All outputs are clearly marked with source='mock'.
+    Lightweight fallback/offline RAG retrieval provider.
+    Outputs source='mock'.
     """
 
     async def retrieve(self, query: str, context: dict | None = None) -> dict:

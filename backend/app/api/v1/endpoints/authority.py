@@ -2,8 +2,6 @@
 # CivicSense AI — Authority Routing Endpoints
 # =============================================================================
 # Endpoint for routing civic issues to the responsible public authority.
-# Owner of interface: Arpit (Person 1)
-# Owner of concrete implementation: Arnav Yadav (Person 2)
 # =============================================================================
 
 from fastapi import APIRouter, Depends

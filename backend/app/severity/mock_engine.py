@@ -21,10 +21,8 @@ logger = get_logger(__name__)
 
 class MockSeverityEngine(SeverityProvider):
     """
-    MOCK: Returns placeholder severity assessment results.
-
-    Replace with real SeverityEngine in Phase 4.
-    All outputs are clearly marked with source='mock'.
+    Lightweight fallback/offline severity assessment provider.
+    Outputs source='mock'.
     """
 
     async def assess(self, vision_result: VisionResult) -> SeverityResult:

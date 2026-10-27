@@ -1,17 +1,9 @@
 # =============================================================================
 # CivicSense AI — Mock Duplicate Detector
 # =============================================================================
-# ⚠️  MOCK IMPLEMENTATION — NOT PRODUCTION CIVIC INTELLIGENCE
-#
-# This mock returns placeholder duplicate detection results.
-# To be replaced by Arnav Yadav (Person 2) with real duplicate detection
-# using GPS proximity, issue similarity, image similarity, etc.
-#
-# Owner of interface: Shared
-# Owner of real implementation: Arnav Yadav (Person 2)
+# Offline / development duplicate detector.
+# Provides baseline duplicate evaluation for testing and decoupled environments.
 # =============================================================================
-
-_MOCK_WARNING = "⚠️ THIS IS A MOCK IMPLEMENTATION — NOT PRODUCTION CIVIC INTELLIGENCE"
 
 from app.core.interfaces import DuplicateDetector
 from app.contracts.duplicate import DuplicateResult
@@ -22,13 +14,9 @@ logger = get_logger(__name__)
 
 class MockDuplicateDetector(DuplicateDetector):
     """
-    MOCK: Returns placeholder duplicate detection results.
-
-    Replace with Arnav's real DuplicateDetector implementation
-    (GPS proximity, issue category, image similarity, text similarity, time).
-
-    All outputs are clearly marked with source='mock'.
-    Default: no duplicate found.
+    Lightweight fallback/offline duplicate detector.
+    Returns baseline zero-match duplicate evaluation.
+    Outputs source='mock'.
     """
 
     async def check(

@@ -2,8 +2,6 @@
 # CivicSense AI — Duplicate Complaint Detection Endpoints
 # =============================================================================
 # Endpoint for checking potential duplicate complaints.
-# Owner of interface: Arpit (Person 1)
-# Owner of concrete implementation: Arnav Yadav (Person 2)
 # =============================================================================
 
 from fastapi import APIRouter, Depends

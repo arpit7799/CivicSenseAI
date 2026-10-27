@@ -2,8 +2,6 @@
 # CivicSense AI — Analytics Contracts (Hotspots & Trends)
 # =============================================================================
 # Pydantic schemas for civic hotspot detection and trend analysis.
-# Owner: Arnav Yadav (Person 2)
-# Interface defined by Arpit for cross-team integration.
 # =============================================================================
 
 from pydantic import BaseModel, Field

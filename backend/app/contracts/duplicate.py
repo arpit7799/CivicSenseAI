@@ -2,8 +2,6 @@
 # CivicSense AI — Duplicate Detection Contracts
 # =============================================================================
 # Pydantic schemas for duplicate complaint detection results.
-# Owner: Arnav Yadav (Person 2)
-# Interface defined by Arpit for cross-team integration.
 # =============================================================================
 
 from pydantic import BaseModel, Field
@@ -23,7 +21,6 @@ class DuplicateResult(BaseModel):
     """
     Duplicate complaint detection result.
 
-    Implementation owner: Arnav (Person 2).
     Signals include GPS proximity, issue category match, image similarity,
     text similarity, and time difference.
     """

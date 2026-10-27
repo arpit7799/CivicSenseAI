@@ -25,10 +25,8 @@ logger = get_logger(__name__)
 
 class MockVisionDetector(VisionProvider):
     """
-    MOCK: Returns placeholder vision detection results.
-
-    Replace with real YOLO-based CivicIssueDetector in Phase 2.
-    All outputs are clearly marked with source='mock'.
+    Lightweight fallback/offline vision detection provider.
+    Outputs source='mock'.
     """
 
     async def detect(self, image_path: str) -> VisionResult:

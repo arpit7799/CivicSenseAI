@@ -7,8 +7,6 @@
 # CRITICAL SOURCE RELIABILITY:
 # Distinguishes verified official municipal guidelines from general guidance
 # and unverified information. Preserves provenance attributes.
-#
-# Owner: Arpit (Person 1) — intake interface for Arnav (Person 2)
 # =============================================================================
 
 from dataclasses import dataclass, field

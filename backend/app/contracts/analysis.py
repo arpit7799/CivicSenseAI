@@ -72,12 +72,12 @@ class AnalysisResponse(BaseModel):
     Complete AI analysis response.
 
     Contains results from all AI pipeline stages:
-    - Vision detection (Arpit)
-    - Severity assessment (Arpit)
-    - Location intelligence (Arnav)
-    - Authority routing (Arnav)
-    - Complaint generation (Arpit)
-    - Duplicate check (Arnav)
+    - Vision detection: Image validation and issue classification
+    - Severity assessment: Hazard severity scoring
+    - Location intelligence: Geographic coordinate resolution
+    - Authority routing: Municipal department routing
+    - Complaint generation: Formal grievance letter construction
+    - Duplicate check: Proximity and similarity duplicate detection
     """
 
     request_id: str = Field(..., description="Unique request identifier")
