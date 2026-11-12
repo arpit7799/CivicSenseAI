@@ -156,3 +156,39 @@ async def test_trends_supports_di_override(client):
         assert data["source"] == "test_trend_analytics"
     finally:
         app.dependency_overrides.pop(get_trend_analyzer, None)
+
+
+# -----------------------------------------------------------------------------
+# Civic News Feed Tests (NewsAPI Integration)
+# -----------------------------------------------------------------------------
+
+@pytest.mark.anyio
+async def test_civic_news_returns_200(client):
+    response = await client.get("/api/v1/analytics/civic-news?city=Gurugram&limit=3")
+    assert response.status_code == 200
+    data = response.json()
+
+    assert data["city"] == "Gurugram"
+    assert "articles" in data
+    assert len(data["articles"]) > 0
+    article = data["articles"][0]
+    assert "title" in article
+    assert "source_name" in article
+    assert "url" in article
+    assert "category" in article
+
+
+@pytest.mark.anyio
+async def test_civic_news_supports_category_filter(client):
+    response = await client.get("/api/v1/analytics/civic-news?category=roads&limit=2")
+    assert response.status_code == 200
+    data = response.json()
+    assert data["category"] == "roads"
+    assert "articles" in data
+
+
+@pytest.mark.anyio
+async def test_civic_news_rejects_invalid_category(client):
+    response = await client.get("/api/v1/analytics/civic-news?category=sports")
+    assert response.status_code == 422
+

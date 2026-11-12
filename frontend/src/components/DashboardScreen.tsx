@@ -22,11 +22,15 @@ import {
   Building2,
   PhoneCall,
   Search,
+  Newspaper,
+  ExternalLink,
+  RefreshCw,
+  Radio,
 } from "lucide-react";
 import GovCarousel from "@/components/GovCarousel";
 import GovPartnersRibbon from "@/components/GovPartnersRibbon";
-import { fetchCivicHotspots, fetchCivicTrends, getStoredComplaints } from "@/lib/api";
-import { StoredComplaint } from "@/lib/types";
+import { fetchCivicHotspots, fetchCivicTrends, fetchCivicNews, getStoredComplaints } from "@/lib/api";
+import { StoredComplaint, CivicNewsArticle } from "@/lib/types";
 
 interface DashboardScreenProps {
   onNavigateReport: () => void;
@@ -44,6 +48,46 @@ export default function DashboardScreen({
   const [trendsData, setTrendsData] = useState<any>(null);
   const [loadingAnalytics, setLoadingAnalytics] = useState<boolean>(true);
   const [trackingSearch, setTrackingSearch] = useState<string>("");
+
+  // Real-time Civic News API state
+  const [activeFeedTab, setActiveFeedTab] = useState<"hotspots" | "news">("hotspots");
+  const [newsCategory, setNewsCategory] = useState<"all" | "roads" | "sanitation" | "environment" | "municipal">("all");
+  const [newsArticles, setNewsArticles] = useState<CivicNewsArticle[]>([]);
+  const [loadingNews, setLoadingNews] = useState<boolean>(false);
+  const [newsLastUpdated, setNewsLastUpdated] = useState<string>("");
+
+  const loadNewsFeed = async (cat: "all" | "roads" | "sanitation" | "environment" | "municipal" = newsCategory) => {
+    setLoadingNews(true);
+    try {
+      const res = await fetchCivicNews("Gurugram", cat, 5);
+      if (res && res.articles) {
+        setNewsArticles(res.articles);
+        setNewsLastUpdated(res.last_updated);
+      }
+    } catch (e) {
+      console.warn("Failed to load civic news feed:", e);
+    } finally {
+      setLoadingNews(false);
+    }
+  };
+
+  useEffect(() => {
+    loadNewsFeed(newsCategory);
+  }, [newsCategory]);
+
+  const formatTimeAgo = (isoString: string) => {
+    try {
+      const diffMs = Date.now() - new Date(isoString).getTime();
+      const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+      if (diffHours < 1) return "Just now";
+      if (diffHours < 24) return `${diffHours}h ago`;
+      const diffDays = Math.floor(diffHours / 24);
+      if (diffDays < 7) return `${diffDays}d ago`;
+      return new Date(isoString).toLocaleDateString("en-IN", { month: "short", day: "numeric" });
+    } catch {
+      return "Recent";
+    }
+  };
 
   useEffect(() => {
     // Read local stored complaints
@@ -226,74 +270,253 @@ export default function DashboardScreen({
 
       {/* 6. Two Column Section: Live Hotspots & Recent Complaints */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Nearby Civic Issues & Hotspots */}
+        {/* Nearby Civic Issues & Real-Time NewsAPI Feed */}
         <div className="bg-slate-900/90 border border-slate-800 rounded-2xl p-6 shadow-xl space-y-4">
-          <div className="flex items-center justify-between border-b border-slate-800 pb-3">
-            <div className="flex items-center space-x-2">
-              <Flame className="w-5 h-5 text-amber-400" />
-              <h2 className="text-base font-bold text-white">Nearby Civic Hotspots (Gurugram)</h2>
+          {/* Card Header with Tab Switcher */}
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-slate-800 pb-3 gap-3">
+            <div className="flex items-center space-x-1.5 bg-slate-950 p-1 rounded-xl border border-slate-800/80">
+              <button
+                onClick={() => setActiveFeedTab("hotspots")}
+                className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                  activeFeedTab === "hotspots"
+                    ? "bg-amber-500/20 text-amber-300 border border-amber-500/40 shadow-sm"
+                    : "text-slate-400 hover:text-slate-200"
+                }`}
+              >
+                <Flame className="w-3.5 h-3.5 text-amber-400" />
+                <span>Nearby Hotspots</span>
+              </button>
+              <button
+                onClick={() => setActiveFeedTab("news")}
+                className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                  activeFeedTab === "news"
+                    ? "bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 shadow-sm"
+                    : "text-slate-400 hover:text-slate-200"
+                }`}
+              >
+                <Newspaper className="w-3.5 h-3.5 text-cyan-400" />
+                <span>Live Civic News</span>
+                <span className="flex h-2 w-2 relative ml-1">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                </span>
+              </button>
             </div>
-            <span className="text-xs text-slate-400">Sector 34 & Vicinity (10km)</span>
+
+            {activeFeedTab === "hotspots" ? (
+              <span className="text-xs text-slate-400 flex items-center space-x-1">
+                <MapPin className="w-3.5 h-3.5 text-slate-500" />
+                <span>Sector 34 & Vicinity (10km)</span>
+              </span>
+            ) : (
+              <div className="flex items-center space-x-2">
+                <span className="text-[10px] uppercase tracking-wider font-extrabold px-2 py-0.5 rounded bg-emerald-950/80 text-emerald-400 border border-emerald-800/60 flex items-center space-x-1">
+                  <Radio className="w-3 h-3 animate-pulse" />
+                  <span>NewsAPI Live</span>
+                </span>
+                <button
+                  onClick={() => loadNewsFeed(newsCategory)}
+                  disabled={loadingNews}
+                  title="Refresh Civic News Feed"
+                  className="p-1 rounded-lg text-slate-400 hover:text-cyan-400 hover:bg-slate-800 transition-colors cursor-pointer disabled:opacity-50"
+                >
+                  <RefreshCw className={`w-3.5 h-3.5 ${loadingNews ? "animate-spin" : ""}`} />
+                </button>
+              </div>
+            )}
           </div>
 
-          <div className="space-y-3">
-            <div className="bg-slate-950/70 border border-slate-800/80 p-3.5 rounded-xl space-y-1.5">
-              <div className="flex items-center justify-between">
-                <span className="font-semibold text-xs text-white flex items-center space-x-1.5">
-                  <MapPin className="w-3.5 h-3.5 text-rose-400" />
-                  <span>Subhash Chowk & Sohna Road Corridor</span>
-                </span>
-                <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-rose-950 text-rose-400 border border-rose-800">
-                  High Density (7 Issues)
-                </span>
+          {/* Tab 1: Nearby Civic Hotspots */}
+          {activeFeedTab === "hotspots" && (
+            <div className="space-y-3">
+              <div className="bg-slate-950/70 border border-slate-800/80 p-3.5 rounded-xl space-y-1.5 hover:border-slate-700 transition-colors">
+                <div className="flex items-center justify-between">
+                  <span className="font-semibold text-xs text-white flex items-center space-x-1.5">
+                    <MapPin className="w-3.5 h-3.5 text-rose-400" />
+                    <span>Subhash Chowk & Sohna Road Corridor</span>
+                  </span>
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-rose-950 text-rose-400 border border-rose-800">
+                    High Density (7 Issues)
+                  </span>
+                </div>
+                <p className="text-[11px] text-slate-400">
+                  Potholes and monsoon waterlogging near arterial transit junction.
+                </p>
+                <div className="flex items-center space-x-3 text-[10px] text-slate-500 pt-1">
+                  <span>Authority: Municipal Corp. of Gurugram</span>
+                  <span>Ward: 34</span>
+                </div>
               </div>
-              <p className="text-[11px] text-slate-400">
-                Potholes and monsoon waterlogging near arterial transit junction.
-              </p>
-              <div className="flex items-center space-x-3 text-[10px] text-slate-500 pt-1">
-                <span>Authority: Municipal Corp. of Gurugram</span>
-                <span>Ward: 34</span>
-              </div>
-            </div>
 
-            <div className="bg-slate-950/70 border border-slate-800/80 p-3.5 rounded-xl space-y-1.5">
-              <div className="flex items-center justify-between">
-                <span className="font-semibold text-xs text-white flex items-center space-x-1.5">
-                  <MapPin className="w-3.5 h-3.5 text-amber-400" />
-                  <span>Sector 38 Main Commercial Market</span>
-                </span>
-                <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-amber-950 text-amber-400 border border-amber-800">
-                  Moderate (4 Issues)
-                </span>
+              <div className="bg-slate-950/70 border border-slate-800/80 p-3.5 rounded-xl space-y-1.5 hover:border-slate-700 transition-colors">
+                <div className="flex items-center justify-between">
+                  <span className="font-semibold text-xs text-white flex items-center space-x-1.5">
+                    <MapPin className="w-3.5 h-3.5 text-amber-400" />
+                    <span>Sector 38 Main Commercial Market</span>
+                  </span>
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-amber-950 text-amber-400 border border-amber-800">
+                    Moderate (4 Issues)
+                  </span>
+                </div>
+                <p className="text-[11px] text-slate-400">
+                  Sanitation bins overflowing near commercial complex sidewalk.
+                </p>
+                <div className="flex items-center space-x-3 text-[10px] text-slate-500 pt-1">
+                  <span>Authority: MCG Sanitation Division</span>
+                  <span>Ward: 32</span>
+                </div>
               </div>
-              <p className="text-[11px] text-slate-400">
-                Sanitation bins overflowing near commercial complex sidewalk.
-              </p>
-              <div className="flex items-center space-x-3 text-[10px] text-slate-500 pt-1">
-                <span>Authority: MCG Sanitation Division</span>
-                <span>Ward: 32</span>
-              </div>
-            </div>
 
-            <div className="bg-slate-950/70 border border-slate-800/80 p-3.5 rounded-xl space-y-1.5">
-              <div className="flex items-center justify-between">
-                <span className="font-semibold text-xs text-white flex items-center space-x-1.5">
-                  <MapPin className="w-3.5 h-3.5 text-cyan-400" />
-                  <span>Cyber City Transit Underpass</span>
-                </span>
-                <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-cyan-950 text-cyan-400 border border-cyan-800">
-                  3 Issues
-                </span>
+              <div className="bg-slate-950/70 border border-slate-800/80 p-3.5 rounded-xl space-y-1.5 hover:border-slate-700 transition-colors">
+                <div className="flex items-center justify-between">
+                  <span className="font-semibold text-xs text-white flex items-center space-x-1.5">
+                    <MapPin className="w-3.5 h-3.5 text-cyan-400" />
+                    <span>Cyber City Transit Underpass</span>
+                  </span>
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-cyan-950 text-cyan-400 border border-cyan-800">
+                    3 Issues
+                  </span>
+                </div>
+                <p className="text-[11px] text-slate-400">
+                  Non-functional street illumination and broken safety curb.
+                </p>
+                <div className="flex items-center space-x-3 text-[10px] text-slate-500 pt-1">
+                  <span>Authority: GMDA Electrical Division</span>
+                  <span>Zone: DLF</span>
+                </div>
               </div>
-              <p className="text-[11px] text-slate-400">
-                Non-functional street illumination and broken safety curb.
-              </p>
-              <div className="flex items-center space-x-3 text-[10px] text-slate-500 pt-1">
-                <span>Authority: GMDA Electrical Division</span>
-                <span>Zone: DLF</span>
+
+              {/* Dynamic backend hotspots if available */}
+              {hotspotsData?.clusters && hotspotsData.clusters.length > 0 && (
+                <div className="pt-2 border-t border-slate-800">
+                  <span className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider block mb-2">
+                    Spatial Clustering Engine (DBSCAN)
+                  </span>
+                  {hotspotsData.clusters.slice(0, 2).map((c: any, idx: number) => (
+                    <div key={idx} className="bg-slate-950/50 border border-slate-800/60 p-2.5 rounded-lg text-xs space-y-1 mb-1.5">
+                      <div className="flex items-center justify-between text-slate-300">
+                        <span className="font-medium text-white">Cluster #{c.cluster_id ?? idx + 1} ({c.issue_type ?? "mixed"})</span>
+                        <span className="text-[10px] text-amber-400">{c.complaint_count ?? c.size} reports</span>
+                      </div>
+                      <p className="text-[10px] text-slate-500">Radius: {c.radius_meters ? (c.radius_meters / 1000).toFixed(1) + "km" : "Local"}</p>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* Tab 2: Real-Time Civic News Feed (NewsAPI.org) */}
+          {activeFeedTab === "news" && (
+            <div className="space-y-3">
+              {/* Category Filter Pills */}
+              <div className="flex items-center space-x-1.5 overflow-x-auto pb-1 scrollbar-none text-[11px]">
+                {[
+                  { id: "all", label: "All News" },
+                  { id: "roads", label: "Roads & Transit" },
+                  { id: "sanitation", label: "Sanitation" },
+                  { id: "environment", label: "Pollution / AQI" },
+                  { id: "municipal", label: "MCG & Policy" },
+                ].map((cat) => (
+                  <button
+                    key={cat.id}
+                    onClick={() => setNewsCategory(cat.id as any)}
+                    className={`px-2.5 py-1 rounded-lg font-semibold whitespace-nowrap transition-colors cursor-pointer ${
+                      newsCategory === cat.id
+                        ? "bg-cyan-500/20 text-cyan-300 border border-cyan-500/50 shadow-sm"
+                        : "bg-slate-950 text-slate-400 hover:text-slate-200 border border-slate-800"
+                    }`}
+                  >
+                    {cat.label}
+                  </button>
+                ))}
+              </div>
+
+              {/* News Articles List */}
+              {loadingNews ? (
+                <div className="py-8 space-y-3 text-center">
+                  <div className="inline-block animate-spin rounded-full h-6 w-6 border-2 border-cyan-400 border-t-transparent" />
+                  <p className="text-xs text-slate-400">Fetching live civic bulletins for Gurugram & NCR...</p>
+                </div>
+              ) : newsArticles.length === 0 ? (
+                <div className="py-8 text-center text-xs text-slate-400 space-y-2">
+                  <p>No recent civic articles found for this filter category.</p>
+                  <button
+                    onClick={() => setNewsCategory("all")}
+                    className="text-cyan-400 hover:underline font-semibold cursor-pointer"
+                  >
+                    Reset to All News
+                  </button>
+                </div>
+              ) : (
+                <div className="space-y-2.5 max-h-[360px] overflow-y-auto pr-1">
+                  {newsArticles.map((article, idx) => {
+                    const badgeColor =
+                      article.category === "Roads & Traffic"
+                        ? "bg-rose-950/80 text-rose-300 border-rose-800/80"
+                        : article.category === "Sanitation & Waste"
+                        ? "bg-amber-950/80 text-amber-300 border-amber-800/80"
+                        : article.category === "Environment & AQI"
+                        ? "bg-emerald-950/80 text-emerald-300 border-emerald-800/80"
+                        : "bg-cyan-950/80 text-cyan-300 border-cyan-800/80";
+
+                    return (
+                      <div
+                        key={idx}
+                        className="group bg-slate-950/80 border border-slate-800/80 hover:border-cyan-500/40 p-3.5 rounded-xl space-y-1.5 transition-all shadow-sm"
+                      >
+                        <div className="flex items-center justify-between gap-2">
+                          <span
+                            className={`text-[10px] font-bold px-2 py-0.5 rounded border ${badgeColor}`}
+                          >
+                            {article.category}
+                          </span>
+                          <span className="text-[10px] text-slate-500 flex items-center space-x-1 shrink-0">
+                            <span>{article.source_name}</span>
+                            <span>•</span>
+                            <span>{formatTimeAgo(article.published_at)}</span>
+                          </span>
+                        </div>
+
+                        <a
+                          href={article.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="font-bold text-xs text-white group-hover:text-cyan-300 transition-colors block line-clamp-2"
+                        >
+                          {article.title}
+                        </a>
+
+                        {article.description && (
+                          <p className="text-[11px] text-slate-400 line-clamp-2 leading-relaxed">
+                            {article.description}
+                          </p>
+                        )}
+
+                        <div className="flex items-center justify-between pt-1 border-t border-slate-900 text-[10px]">
+                          <span className="text-slate-500">Region: {article.city}</span>
+                          <a
+                            href={article.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-cyan-400 hover:text-cyan-300 font-semibold flex items-center space-x-1 group-hover:translate-x-0.5 transition-transform"
+                          >
+                            <span>Read Full Bulletin</span>
+                            <ExternalLink className="w-3 h-3" />
+                          </a>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+
+              <div className="pt-2 border-t border-slate-800/80 flex items-center justify-between text-[10px] text-slate-500">
+                <span>Aggregated via NewsAPI.org (Civic Wire)</span>
+                {newsLastUpdated && <span>Updated: {formatTimeAgo(newsLastUpdated)}</span>}
               </div>
             </div>
-          </div>
+          )}
         </div>
 
         {/* Recent Registered Complaints */}

@@ -132,6 +132,20 @@ class Settings(BaseSettings):
         description="PostgreSQL connection URL",
     )
 
+    # ----- News API (Civic Intelligence & Hotspot Feeds) -----
+    news_api_key: str | None = Field(
+        default=None,
+        description="NewsAPI.org key for real-time civic, municipal, and infrastructure news",
+    )
+    news_api_base_url: str = Field(
+        default="https://newsapi.org/v2/everything",
+        description="NewsAPI endpoint for civic articles",
+    )
+    news_cache_ttl_seconds: int = Field(
+        default=900,
+        description="Cache TTL in seconds for civic news queries (default: 15 mins to conserve API quota)",
+    )
+
     # ----- Location Provider -----
     geocoder_base_url: str = Field(
         default="https://nominatim.openstreetmap.org",

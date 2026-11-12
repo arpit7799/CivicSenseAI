@@ -153,3 +153,23 @@ export interface StoredComplaint {
   status: "Draft Ready" | "Dispatched" | "In Review" | "Resolved";
   image_preview?: string;
 }
+
+export interface CivicNewsArticle {
+  title: string;
+  description: string | null;
+  source_name: string;
+  url: string;
+  url_to_image: string | null;
+  published_at: string;
+  category: string;
+  city: string;
+}
+
+export interface CivicNewsResponse {
+  city: string;
+  category: string;
+  total_results: number;
+  articles: CivicNewsArticle[];
+  cached: boolean;
+  last_updated: string;
+}

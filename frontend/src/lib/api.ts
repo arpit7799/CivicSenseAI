@@ -2,7 +2,7 @@
 // CivicSense AI — Frontend API Client
 // =============================================================================
 
-import { AnalysisRequest, AnalysisResponse, HealthResponse, StoredComplaint } from "./types";
+import { AnalysisRequest, AnalysisResponse, HealthResponse, StoredComplaint, CivicNewsResponse } from "./types";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000/api/v1";
 
@@ -70,6 +70,28 @@ export async function fetchCivicTrends(region: string = "Gurugram", daysBack: nu
     return await res.json();
   } catch (e) {
     console.warn("Failed to fetch trends:", e);
+    return null;
+  }
+}
+
+export async function fetchCivicNews(
+  city: string = "Gurugram",
+  category: "all" | "roads" | "sanitation" | "environment" | "municipal" = "all",
+  limit: number = 5
+): Promise<CivicNewsResponse | null> {
+  try {
+    const res = await fetch(
+      `${API_BASE_URL}/analytics/civic-news?city=${encodeURIComponent(city)}&category=${category}&limit=${limit}`,
+      {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+        cache: "no-store",
+      }
+    );
+    if (!res.ok) return null;
+    return await res.json();
+  } catch (e) {
+    console.warn("Failed to fetch civic news:", e);
     return null;
   }
 }
