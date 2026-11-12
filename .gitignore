@@ -17,6 +17,8 @@ build/
 civicsenseAI_env/
 venv/
 .venv/
+.venv
+backend/.venv
 env/
 
 # ----- Environment / Secrets -----
