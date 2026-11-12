@@ -24,7 +24,7 @@ def test_classify_valid_civic_issues():
     )
     d4 = Detection(
         issue_class="pothole",
-        confidence=0.40, # Below 0.50 threshold
+        confidence=0.15, # Below confidence threshold
         bounding_box=BoundingBox(x_min=0, y_min=0, x_max=10, y_max=10)
     )
     

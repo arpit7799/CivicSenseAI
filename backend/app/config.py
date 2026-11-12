@@ -54,7 +54,7 @@ class Settings(BaseSettings):
     min_image_width: int = Field(default=64, description="Minimum allowed image width")
     min_image_height: int = Field(default=64, description="Minimum allowed image height")
     blur_variance_threshold: float = Field(default=50.0, description="Threshold for Variance of Laplacian (blur detection)")
-    min_confidence_threshold: float = Field(default=0.50, description="Minimum YOLO confidence to accept a detection")
+    min_confidence_threshold: float = Field(default=0.25, description="Minimum YOLO confidence to accept a detection")
     civic_issue_classes: set[str] = Field(
         default={
             # Core classes & canonical forms
