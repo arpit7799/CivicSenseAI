@@ -6,9 +6,11 @@
 # Owner: Arpit (Person 1)
 # =============================================================================
 
+import os
 import time
 from pathlib import Path
 
+os.environ.setdefault("YOLO_CONFIG_DIR", "/tmp")
 from ultralytics import YOLO
 
 from app.core.interfaces import VisionProvider
@@ -37,11 +39,20 @@ class YOLODetector(VisionProvider):
     def _load_model(self):
         """Load the YOLO model strictly from the configured path."""
         path = Path(self.model_path)
+        if not path.exists():
+            backend_dir = Path(__file__).resolve().parents[2]
+            candidates = [
+                backend_dir / self.model_path.replace("./", ""),
+                backend_dir / "models" / "civicsense_yolo.pt",
+                backend_dir.parent / self.model_path.replace("./", ""),
+            ]
+            for candidate in candidates:
+                if candidate.exists():
+                    path = candidate
+                    self.model_path = str(candidate)
+                    break
         
         try:
-            # If the user explicitly configures "yolov8n.pt" for testing, ultralytics 
-            # will handle downloading it. Otherwise, if it's a local path that doesn't 
-            # exist, we want to fail loudly rather than silently falling back.
             if not path.exists() and not self.model_path.endswith('.pt') and "/" in self.model_path:
                 raise FileNotFoundError(f"Model weights not found at {self.model_path}")
                 
@@ -82,7 +93,12 @@ class YOLODetector(VisionProvider):
 
         # We proceed with inference even if quality issues are found to extract whatever we can,
         # but the decision engine may later reject it based on `is_valid`.
-        results = self._model.predict(source=image_bgr, verbose=False)
+        settings = get_settings()
+        results = self._model.predict(
+            source=image_bgr,
+            conf=settings.min_confidence_threshold,
+            verbose=False,
+        )
         
         # 4. Parse Results
         raw_detections = []
