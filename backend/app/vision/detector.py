@@ -100,7 +100,7 @@ class YOLODetector(VisionProvider):
                 x1, y1, x2, y2 = map(float, box.xyxy[0])
                 
                 raw_detections.append(Detection(
-                    issue_class=class_name.replace(" ", "_"),
+                    issue_class=class_name.replace(" ", "_").replace("/", "_"),
                     confidence=conf,
                     bounding_box=BoundingBox(
                         x_min=x1, y_min=y1, x_max=x2, y_max=y2

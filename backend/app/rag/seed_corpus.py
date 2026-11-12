@@ -116,6 +116,108 @@ SEED_CIVIC_DOCUMENTS: list[CivicDocument] = [
         ),
     ),
     CivicDocument(
+        id="MVA-ILLEGAL-PARKING-REGULATION-01",
+        category="illegal_parking_and_traffic",
+        source=DocumentSource(
+            authority_name="Traffic Police & Municipal Enforcement",
+            title="Urban Roadway Obstruction and Illegal Parking Regulations",
+            reference_id="MVA-Sec-122-Parking",
+            verification_status=VerificationStatus.VERIFIED_OFFICIAL,
+            jurisdiction="Municipal Traffic Enforcement & Road Safety",
+            verified_at="2026-11-12",
+        ),
+        text=(
+            "Unauthorized vehicle parking on pedestrian footpaths, arterial carriage-ways, or designated emergency corridors "
+            "causes severe congestion, blocks emergency access, and forces pedestrians into vehicular traffic. "
+            "Municipal traffic enforcement units are empowered to tow obstructing vehicles and issue electronic challans immediately."
+        ),
+    ),
+    CivicDocument(
+        id="IRC-67-ROAD-SIGNAGE-MAINTENANCE-01",
+        category="broken_road_signs",
+        source=DocumentSource(
+            authority_name="Indian Roads Congress (IRC)",
+            title="Code of Practice for Road Signs & Traffic Control Devices (IRC:67)",
+            reference_id="IRC:67-Signage",
+            verification_status=VerificationStatus.VERIFIED_OFFICIAL,
+            jurisdiction="Roadways and Traffic Engineering",
+            verified_at="2026-11-12",
+        ),
+        text=(
+            "Damaged, obscured, or broken regulatory, warning, and guide signs critically compromise driver decision-making "
+            "and increase crash probability at intersections. Highway and urban local bodies must inspect, re-align, "
+            "or replace damaged signboards with high-intensity retro-reflective sheeting within 48 hours."
+        ),
+    ),
+    CivicDocument(
+        id="MUNICIPAL-VANDALISM-DEFACEMENT-ACT-01",
+        category="vandalism_and_graffiti",
+        source=DocumentSource(
+            authority_name="Municipal Corporation & Public Property Authority",
+            title="Prevention of Defacement of Public Property Act Regulations",
+            reference_id="Defacement-Act-Sec3",
+            verification_status=VerificationStatus.VERIFIED_OFFICIAL,
+            jurisdiction="Municipal Infrastructure & Public Asset Protection",
+            verified_at="2026-11-12",
+        ),
+        text=(
+            "Unauthorized graffiti, defacement, or vandalism of civic structures, flyover pillars, and public transit shelters "
+            "degrades urban aesthetics and signals civil disorder. Municipal maintenance divisions are required to pressure-wash, "
+            "re-coat, or restore vandalized public surfaces within 72 hours of verification."
+        ),
+    ),
+    CivicDocument(
+        id="VET-SANITATION-DEAD-ANIMAL-DISPOSAL-01",
+        category="dead_animal_pollution",
+        source=DocumentSource(
+            authority_name="Municipal Health & Veterinary Services Department",
+            title="Standard Operating Procedure for Safe Carcass Removal and Sanitary Disposal",
+            reference_id="Vet-Sanitation-SOP-01",
+            verification_status=VerificationStatus.VERIFIED_OFFICIAL,
+            jurisdiction="Municipal Sanitation and Public Health",
+            verified_at="2026-11-12",
+        ),
+        text=(
+            "Animal carcasses on public thoroughfares cause severe biohazard risks, putrid stench, and pathogen transmission. "
+            "Municipal veterinary sanitation flying squads must retrieve, transport in sealed refrigerated vehicles, "
+            "and deep-bury or incinerate deceased animals within 6 to 12 hours of complaint registration."
+        ),
+    ),
+    CivicDocument(
+        id="CPWD-STRUCTURAL-MAINTENANCE-CONCRETE-01",
+        category="damaged_concrete_structures",
+        source=DocumentSource(
+            authority_name="Central Public Works Department & Structural Safety Cell",
+            title="Guidelines for Repair and Rehabilitation of Damaged Concrete Structures",
+            reference_id="CPWD-Concrete-Safety-Code",
+            verification_status=VerificationStatus.VERIFIED_OFFICIAL,
+            jurisdiction="Civil Engineering and Structural Safety",
+            verified_at="2026-11-12",
+        ),
+        text=(
+            "Spalling concrete, exposed corroded rebar, fractured parapets, or structural cracks in public bridges, overpasses, "
+            "and retaining walls indicate active structural degradation. Structural engineering teams must immediately cord-off "
+            "the perimeter and execute pressure grouting, polymer-modified mortar repair, or micro-concrete jackets."
+        ),
+    ),
+    CivicDocument(
+        id="CEA-ELECTRICAL-SAFETY-POLES-WIRES-01",
+        category="damaged_electrical_poles_and_wires",
+        source=DocumentSource(
+            authority_name="Central Electricity Authority (CEA)",
+            title="Measures Relating to Safety and Electric Supply Regulations (Regulation 73)",
+            reference_id="CEA-Safety-Reg-73",
+            verification_status=VerificationStatus.VERIFIED_OFFICIAL,
+            jurisdiction="Power Distribution Utilities & Municipal Engineering",
+            verified_at="2026-11-12",
+        ),
+        text=(
+            "Tilted or broken utility poles, low-hanging electrical conductors, or dangling live wires pose lethal electrocution "
+            "and fire hazards to commuters. Power distribution licensees and municipal electrical engineers are legally bound "
+            "to isolate power immediately upon notification and replace damaged poles and insulators within 12 to 24 hours."
+        ),
+    ),
+    CivicDocument(
         id="CIVICSENSE-REPORTING-CHECKLIST-01",
         category="general_reporting_guidance",
         source=DocumentSource(

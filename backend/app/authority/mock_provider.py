@@ -14,11 +14,29 @@ logger = get_logger(__name__)
 
 DEPARTMENT_MAP = {
     "pothole": "Roads & Civil Works Division",
+    "pothole_issues": "Roads & Civil Works Division",
     "road_damage": "Roads & Civil Works Division",
+    "damaged_road_issues": "Roads & Civil Works Division",
     "garbage_dump": "Sanitation & Solid Waste Management Department",
+    "littering_garbage_on_public_places": "Sanitation & Solid Waste Management Department",
+    "littering/garbage_on_public_places": "Sanitation & Solid Waste Management Department",
     "broken_streetlight": "Electrical & Public Lighting Division",
+    "damaged_electric_wires_and_poles": "Electrical & Power Infrastructure Division",
+    "damaged_electric_poles": "Electrical & Power Infrastructure Division",
     "water_logging": "Drainage & Sewerage Maintenance Division",
     "fallen_tree": "Horticulture & Urban Forestry Department",
+    "fallen_trees": "Horticulture & Urban Forestry Department",
+    "broken_road_sign": "Traffic Management & Signage Division",
+    "broken_road_sign_issues": "Traffic Management & Signage Division",
+    "illegal_parking": "Traffic Enforcement & Parking Management Division",
+    "illegal_parking_issues": "Traffic Enforcement & Parking Management Division",
+    "vandalism": "Municipal Property & Asset Protection Division",
+    "vandalism_issues": "Municipal Property & Asset Protection Division",
+    "graffiti": "Municipal Property & Asset Protection Division",
+    "dead_animal": "Public Health & Veterinary Sanitation Division",
+    "dead_animal_pollution": "Public Health & Veterinary Sanitation Division",
+    "damaged_concrete": "Civil Engineering & Structural Works Division",
+    "damaged_concrete_structures": "Civil Engineering & Structural Works Division",
 }
 
 

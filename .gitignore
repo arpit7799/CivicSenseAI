@@ -55,6 +55,8 @@ backend/datasets/*.zip
 backend/datasets/*.tar.gz
 backend/datasets/images/
 backend/datasets/civic_dataset/images/
+backend/datasets/civic_dataset/labels/
+backend/datasets/civic_dataset/manifests/
 backend/datasets/**/*.cache
 !backend/datasets/.gitkeep
 

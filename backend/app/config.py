@@ -57,12 +57,31 @@ class Settings(BaseSettings):
     min_confidence_threshold: float = Field(default=0.50, description="Minimum YOLO confidence to accept a detection")
     civic_issue_classes: set[str] = Field(
         default={
+            # Core classes & canonical forms
             "pothole",
+            "pothole_issues",
             "garbage_dump",
+            "littering_garbage_on_public_places",
+            "littering/garbage_on_public_places",
             "broken_streetlight",
+            "damaged_electric_wires_and_poles",
+            "damaged_electric_poles",
             "road_damage",
+            "damaged_road_issues",
             "water_logging",
-            "fallen_tree"
+            "fallen_tree",
+            "fallen_trees",
+            "illegal_parking",
+            "illegal_parking_issues",
+            "broken_road_sign",
+            "broken_road_sign_issues",
+            "vandalism",
+            "vandalism_issues",
+            "graffiti",
+            "dead_animal",
+            "dead_animal_pollution",
+            "damaged_concrete",
+            "damaged_concrete_structures",
         },
         description="Ontology of valid civic issue classes"
     )

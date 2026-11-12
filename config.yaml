@@ -1,0 +1,15 @@
+path: /Users/arpit_7799/Documents/Projects/CivicAI/backend/datasets/civic_dataset
+train: images/train
+val: images/valid
+test: images/test
+names:
+  0: Damaged Road issues
+  1: Pothole Issues
+  2: Illegal Parking Issues
+  3: Broken Road Sign Issues
+  4: Fallen trees
+  5: Littering/Garbage on Public Places
+  6: Vandalism Issues
+  7: Dead Animal Pollution
+  8: Damaged concrete structures
+  9: Damaged Electric wires and poles
