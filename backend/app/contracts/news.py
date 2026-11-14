@@ -34,3 +34,4 @@ class CivicNewsResponse(BaseModel):
     )
     cached: bool = Field(default=False, description="Whether response was served from cache")
     last_updated: str = Field(..., description="ISO timestamp of data retrieval")
+

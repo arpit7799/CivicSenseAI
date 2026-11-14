@@ -2,6 +2,14 @@
 # CivicSense AI — Test Configuration
 # =============================================================================
 
+import sys
+from pathlib import Path
+
+# Ensure 'backend' directory is in sys.path for test runners and language servers
+_backend_dir = Path(__file__).resolve().parent.parent
+if str(_backend_dir) not in sys.path:
+    sys.path.insert(0, str(_backend_dir))
+
 import pytest
 from httpx import AsyncClient, ASGITransport
 
